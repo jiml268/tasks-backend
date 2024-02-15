@@ -13,13 +13,13 @@ const taskBoardController = {
 
       const newTitle = await taskHeader.create(createTitle);
       return res.status(201).json({
-        code: "201",
+        code: 201,
         message: "Header was created",
         data: newTitle,
       });
     } catch (err) {
       return res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: "An error has accurred",
         error: err,
       });
@@ -63,13 +63,13 @@ const taskBoardController = {
 
       const newTask = await tasksDetails.create(createTask);
       return res.status(201).json({
-        code: "201",
+        code: 201,
         message: "Task was created",
         data: newTask,
       });
     } catch (err) {
       return res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: err,
         error: err,
       });
@@ -83,20 +83,20 @@ const taskBoardController = {
       const data = await taskHeader.findOne({ user_id: currentUser });
       if (data) {
         res.status(200).json({
-          code: "200",
+          code: 200,
           message: "Header Received",
           data: data,
         });
       } else {
         res.status(404).json({
-          code: "404",
+          code: 404,
           message: "No Header Foundf",
           data: data,
         });
       }
     } catch (err) {
       res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: `No contact was found for id ${req.params.id}`,
         error: err,
       });
@@ -106,26 +106,24 @@ const taskBoardController = {
   async getTasks(req, res) {
     try {
       const currentUser = req.params.id ? req.params.id : 1;
-      console.log("currentUser", currentUser);
       const data = await tasksDetails.find({ user_id: currentUser });
-      console.log("currentUser", currentUser);
 
       if (data.length > 0) {
         res.status(200).json({
-          code: "200",
+          code: 200,
           message: "All Tasks received",
           data: data,
         });
       } else {
         res.status(404).json({
-          code: "404",
+          code: 404,
           message: `No tasks were found for user ${currentUser}`,
           data: data,
         });
       }
     } catch (err) {
       res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: `No tasks were found for user ${req.params.id}`,
         error: err,
       });
@@ -152,13 +150,13 @@ const taskBoardController = {
         }
       );
       return res.status(200).json({
-        code: "200",
+        code: 200,
         message: "Task updated",
         data: updateTask,
       });
     } catch (err) {
       return res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: err,
         error: err,
       });
@@ -174,20 +172,20 @@ const taskBoardController = {
       const getTask = await tasksDetails.findById(filter);
       if (getTask) {
         return res.status(200).json({
-          code: "200",
+          code: 200,
           message: "Task found",
           data: getTask,
         });
       } else {
         return res.status(200).json({
-          code: "404",
+          code: 404,
           message: "no task found",
           data: getTask,
         });
       }
     } catch (err) {
       return res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: err,
         error: err,
       });
@@ -201,21 +199,20 @@ const taskBoardController = {
       const updateTask = await tasksDetails.findByIdAndDelete(filter);
       if (updateTask) {
         return res.status(200).json({
-          code: "200",
+          code: 200,
           message: "Task deleted",
           data: updateTask,
         });
       } else {
         return res.status(404).json({
-          code: "404",
+          code: 404,
           message: "Task not deleted",
           data: updateTask,
         });
       }
     } catch (err) {
-      console.log(err);
       return res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: err,
         error: err,
       });
@@ -230,27 +227,25 @@ const taskBoardController = {
         boardName: boardName,
         boardDescription: boardDescription,
       };
-      console.log("filter", filter);
-      console.log("editTask", editTask);
       const updateTask = await taskHeader.findOneAndUpdate(filter, editTask, {
         new: true,
       });
       if (updateTask) {
         return res.status(200).json({
-          code: "200",
+          code: 200,
           message: "Header updated",
           data: updateTask,
         });
       } else {
         return res.status(404).json({
-          code: "404",
+          code: 404,
           message: "Header Not updated",
           data: updateTask,
         });
       }
     } catch (err) {
       return res.status(400).json({
-        code: "400",
+        code: 400,
         Massage: err,
         error: err,
       });
