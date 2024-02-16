@@ -194,6 +194,7 @@ const taskBoardController = {
 
   async deleteTask(req, res) {
     try {
+      
       const { task_id } = req.body;
       const filter = { _id: task_id };
       const updateTask = await tasksDetails.findByIdAndDelete(filter);
@@ -221,15 +222,17 @@ const taskBoardController = {
 
   async editHeader(req, res) {
     try {
+      console.log('req.body', req.body)
       const { task_id, boardName, boardDescription } = req.body;
-      const filter = { user_id: task_id };
+      const filter = { _id: task_id };
       const editTask = {
         boardName: boardName,
         boardDescription: boardDescription,
       };
-      const updateTask = await taskHeader.findOneAndUpdate(filter, editTask, {
+      const updateTask = await taskHeader.findByIdAndUpdate(filter, editTask, {
         new: true,
       });
+      console.log('updateTask', updateTask)
       if (updateTask) {
         return res.status(200).json({
           code: 200,
@@ -244,6 +247,8 @@ const taskBoardController = {
         });
       }
     } catch (err) {
+            console.log('err', err)
+
       return res.status(400).json({
         code: 400,
         Massage: err,
