@@ -15,7 +15,7 @@ app.use("/api", routes);
 getConnection();
 
 //listening to port
-const port = process.env.DB_PORT || 5000;
+const port = process.env.PORT || 3030;
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);

@@ -75,12 +75,10 @@ async editHeader(req, res) {
   async getTasks(req, res) {
     try {
       const { user_id } = req.body;
-      console.log('user_id', user_id)
-            console.log(' req.body',  req.body)
+    
 
 
       const data = await tasksDetails.find({ user_id: user_id });
- console.log('data', data)
       if (data.length > 0) {
         res.status(200).json({
           code: 200,
@@ -95,7 +93,6 @@ async editHeader(req, res) {
         });
       }
     } catch (err) {
-      console.log(err)
       res.status(400).json({
         code: 400,
         Massage: `No tasks were found for user ${req.params.id}`,
@@ -103,7 +100,122 @@ async editHeader(req, res) {
       });
     }
   },
+async editTask(req, res) {
+    try {
+      const { task_id, user_id, taskTitle, task_description, icon, stat } = req.body;
 
+      const filter = { _id: task_id };
+      const editTask = {
+        user_id: user_id,
+        taskTitle: taskTitle,
+        task_description: task_description,
+        icon: icon,
+        stat: stat,
+      };
+
+      const updateTask = await tasksDetails.findByIdAndUpdate(
+        filter,
+        editTask,
+        {
+          new: true,
+        }
+      );
+      return res.status(200).json({
+        code: 200,
+        message: "Task updated",
+        data: updateTask,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        code: 400,
+        Massage: err,
+        error: err,
+      });
+    }
+  },
+
+  
+
+  async deleteTask(req, res) {
+    try {
+      const { task_id } = req.body;
+      const filter = { _id: task_id };
+     
+      const deleteTask = await tasksDetails.findByIdAndDelete(filter);
+      if (deleteTask) {
+        return res.status(200).json({
+          code: 200,
+          message: "Task deleted",
+          data: deleteTask,
+        });
+      } else {
+        return res.status(404).json({
+          code: 404,
+          message: "Task not deleted",
+          data: deleteTask,
+        });
+      }
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json({
+        code: 400,
+        Massage: err,
+        error: err,
+      });
+    }
+  },
+
+  async createTask(req, res) {
+    try {
+      const { user_id } = req.body;
+      const randomIcon = Math.floor(Math.random() * 6);
+      let iconName = "";
+      switch (randomIcon) {
+        case 0:
+          iconName = "iconName";
+          break;
+        case 1:
+          iconName = "message";
+          break;
+        case 2:
+          iconName = "coffee";
+          break;
+        case 3:
+          iconName = "weightlift";
+          break;
+        case 4:
+          iconName = "books";
+          break;
+        case 5:
+          iconName = "alarm";
+          break;
+        default:
+          iconName = "alarm";
+      }
+      console.log('iconName', iconName)
+      const createTask = {
+        user_id,
+        taskTitle: "New Task",
+        task_description: "New Task",
+        icon:  iconName ,
+        stat: "none",
+      };
+
+      const newTask = await tasksDetails.create(createTask);
+      return res.status(201).json({
+        code: 201,
+        message: "Task was created",
+        data: newTask,
+      });
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json({
+        code: 400,
+        Massage: err,
+        error: err,
+      });
+    }
+  },
 
 };
 
